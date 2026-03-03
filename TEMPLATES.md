@@ -1,0 +1,287 @@
+# Output Templates
+
+Templates for each digest mode. All templates use placeholder syntax `{variable}` — replace with actual extracted content. Output language should match the user's input language.
+
+---
+
+## Markdown Templates
+
+### Quick Save
+
+```markdown
+---
+title: "{title}"
+source: "{url}"
+platform: {platform}
+author: "{author}"
+type: quick-save
+tags:
+  - {tag1}
+  - {tag2}
+date: {YYYY-MM-DD}
+---
+
+## Summary
+
+{3-5 sentence summary of the content}
+
+## Key Points
+
+- {bullet point 1}
+- {bullet point 2}
+- {bullet point 3}
+
+## Raw Content
+
+> [!note]- Expand to see original content
+> {full extracted text, image descriptions, or transcript}
+>
+> **Engagement**: {likes} likes | {shares} shares | {comments} comments
+```
+
+### Resonance
+
+```markdown
+---
+title: "{title}"
+source: "{url}"
+platform: {platform}
+author: "{author}"
+type: resonance
+tags:
+  - {tag1}
+  - {tag2}
+date: {YYYY-MM-DD}
+---
+
+## What Resonated
+
+> {extract the specific quote or point that connects to user's note}
+
+## My Thoughts
+
+{user's note if provided, otherwise: "(to be filled in)"}
+
+## Content Summary
+
+{3-5 sentence summary of the full content}
+
+## Raw Content
+
+> [!note]- Expand to see original content
+> {full extracted text, image descriptions, or transcript}
+>
+> **Engagement**: {likes} likes | {shares} shares | {comments} comments
+```
+
+### Research
+
+```markdown
+---
+title: "{research topic} — Research Notes"
+sources:
+  - "{url1}"
+  - "{url2}"
+platform: {platforms}
+type: research
+tags:
+  - {tag1}
+  - {tag2}
+date: {YYYY-MM-DD}
+---
+
+## Research Question
+
+{what the user is investigating, derived from their note}
+
+## Key Findings
+
+### {Source 1 Title}
+- **Main point**: {core argument or offering}
+- **Strengths**: {what it does well}
+- **Weaknesses**: {limitations or concerns}
+
+### {Source 2 Title}
+- **Main point**: {core argument or offering}
+- **Strengths**: {what it does well}
+- **Weaknesses**: {limitations or concerns}
+
+## Comparison
+
+| Aspect | {Source 1} | {Source 2} |
+|--------|-----------|-----------|
+| {key dimension 1} | {value} | {value} |
+| {key dimension 2} | {value} | {value} |
+| {key dimension 3} | {value} | {value} |
+
+## Takeaway
+
+{synthesized conclusion — what does this research suggest?}
+
+## Raw Sources
+
+> [!note]- Source 1: {title}
+> {extracted content}
+
+> [!note]- Source 2: {title}
+> {extracted content}
+```
+
+### Actionable
+
+```markdown
+---
+title: "{title}"
+source: "{url}"
+platform: {platform}
+author: "{author}"
+type: actionable
+tags:
+  - {tag1}
+  - {tag2}
+date: {YYYY-MM-DD}
+---
+
+## What This Is
+
+{one-line description of the content and why it's useful}
+
+## Action Items
+
+- [ ] {step 1}
+- [ ] {step 2}
+- [ ] {step 3}
+- [ ] {step 4}
+
+## Details
+
+{expanded notes, tips, warnings, or context for the action items}
+
+## Resources Mentioned
+
+- {tool/product/link mentioned in content}
+- {another resource}
+
+## Raw Content
+
+> [!note]- Expand to see original content
+> {full extracted text, image descriptions, or transcript}
+```
+
+### Breakdown
+
+```markdown
+---
+title: "{title} — Breakdown"
+source: "{url}"
+platform: {platform}
+author: "{author}"
+type: breakdown
+tags:
+  - {tag1}
+  - {tag2}
+date: {YYYY-MM-DD}
+---
+
+## What They Did
+
+{one-line summary of the content/creation being analyzed}
+
+## Structure Analysis
+
+{how is the content organized? what's the format/flow?}
+
+## Strategy & Techniques
+
+- **{technique 1}**: {how they used it and why it works}
+- **{technique 2}**: {how they used it and why it works}
+- **{technique 3}**: {how they used it and why it works}
+
+## What Makes It Work
+
+{the core insight — why is this content effective?}
+
+## Reusable Patterns
+
+- {pattern you could apply to your own work}
+- {another transferable pattern}
+
+## Raw Content
+
+> [!note]- Expand to see original content
+> {full extracted text, image descriptions, or transcript}
+```
+
+---
+
+## HTML Output Instructions
+
+When the user requests HTML output (or their default format is HTML), generate a **self-contained single HTML file** with these characteristics:
+
+### Design Principles
+- Single file, no external dependencies (inline all CSS)
+- Clean, modern typography (system font stack)
+- Responsive layout (works on mobile and desktop)
+- Light/dark mode support via `prefers-color-scheme`
+- Print-friendly styles
+
+### Structure
+```html
+<!DOCTYPE html>
+<html lang="{detected_language}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} — Digest</title>
+  <style>
+    /* Inline all styles here */
+    /* Use system font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', ... */
+    /* Include dark mode: @media (prefers-color-scheme: dark) { ... } */
+  </style>
+</head>
+<body>
+  <article>
+    <header>
+      <!-- Metadata: source, author, platform, date -->
+    </header>
+    <main>
+      <!-- Mode-specific content (same structure as markdown templates) -->
+    </main>
+    <footer>
+      <!-- Raw content in collapsible <details> element -->
+      <!-- Generated by /digest -->
+    </footer>
+  </article>
+</body>
+</html>
+```
+
+### Visual Style
+- Max content width: 720px, centered
+- Generous whitespace and line-height (1.6+)
+- Subtle color accents for metadata and tags
+- Collapsible raw content section using `<details><summary>`
+- Blockquotes styled distinctively for resonance quotes
+
+---
+
+## Slides Output Instructions
+
+When the user requests slides output, generate an **HTML slide deck**:
+
+### Design Principles
+- Self-contained single HTML file
+- Keyboard navigation (arrow keys for prev/next)
+- Slide counter and progress indicator
+- Best suited for Research and Breakdown modes
+
+### Structure
+- Slide 1: Title + source metadata
+- Slides 2-N: Key findings, one point per slide
+- Final slide: Summary/takeaway + source links
+
+### Implementation
+- Use CSS scroll-snap for slide behavior
+- Each slide is a `<section>` with `height: 100vh`
+- Include minimal JS for keyboard navigation
+- Follow the same visual style as HTML output (system fonts, responsive)
