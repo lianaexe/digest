@@ -29,14 +29,14 @@ On first run, if no config exists at `.digest-config` in this skill's directory:
    - Check installed tools: x-reader MCP, whisper, ffmpeg, playwright
    - Detect user locale
 
-2. **Ask setup questions** via AskUserQuestion:
+2. **Ask setup questions** via AskUserQuestion — you MUST ask BOTH questions, do NOT skip any:
 
    Q1 — Output directory:
    - If Obsidian vault detected: offer `{vault}/Inbox/` as recommended option
    - Always offer: `~/Documents/digest/`
    - Always offer: Custom path
 
-   Q2 — Default output format:
+   Q2 — Default output format (MUST ask even if it seems obvious):
    - Markdown (recommended)
    - HTML
 
