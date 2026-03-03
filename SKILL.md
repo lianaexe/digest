@@ -72,6 +72,8 @@ On first run, if no config exists at `.digest-config` in this skill's directory:
 
 ### Step 2: Extract Content
 
+**IMPORTANT — Maximize speed by running extraction in parallel with config reading.** When possible, start fetching the URL content at the same time as reading the config file. Do NOT wait for config to finish before starting extraction.
+
 Select the best available extraction method:
 
 **Priority chain:**
@@ -123,13 +125,22 @@ Load the appropriate template from `TEMPLATES.md` based on the selected mode and
    - For markdown: `.md`
    - For HTML: `.html`
 3. Write the file
-4. Confirm to user:
+4. If output format is HTML, run `open {filepath}` to preview in browser
+5. Display a **digest card** to confirm (use box-drawing characters for visual structure):
 
 ```
-✅ Digested → {output_dir}/{filename}
-📝 Mode: {mode} | Source: {platform} | Author: {author}
-💡 {one-line summary}
+┌─────────────────────────────────────────────────┐
+│  ✅ Digested: {title}                           │
+│  📝 {mode} | {platform} | {author}              │
+│  🏷️  {tag1} · {tag2} · {tag3}                   │
+│                                                 │
+│  💡 {2-3 sentence summary}                      │
+│                                                 │
+│  📄 {output_dir}/{filename}                     │
+└─────────────────────────────────────────────────┘
 ```
+
+The digest card should be visually clean and give the user a complete snapshot of what was digested. Adjust the box width to fit the content.
 
 ---
 
