@@ -4,7 +4,11 @@
 
 > Stop hoarding links. Start digesting them.
 
-<!-- TODO: Add GIF demo here -->
+<div align="center">
+
+https://github.com/lianaexe/digest/raw/main/demo.mp4
+
+</div>
 
 ---
 
