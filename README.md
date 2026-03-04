@@ -6,7 +6,9 @@
 
 <div align="center">
 
-https://github.com/lianaexe/digest/raw/main/demo.mp4
+https://github.com/user-attachments/assets/63a9718f-6378-406d-8be0-7f7dfb6753fb
+
+*Pitch deck generated with [frontend-slides](https://github.com/zarazhangrui/frontend-slides) — a Claude Code skill for creating stunning HTML presentations.*
 
 </div>
 
