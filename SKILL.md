@@ -112,9 +112,11 @@ Based on what the user said (if anything), determine the digest mode:
 When the detected mode is ambiguous, ask ONE confirming question:
 "Detected this is about [topic]. Would you like me to: 1) [Mode A action] 2) [Mode B action] 3) Just save it"
 
-#### 3b: Format Selection (ALWAYS ask)
+#### 3b: Format Selection (ALWAYS ask — ask EARLY)
 
-After determining the mode, ALWAYS ask the user what output format they want for THIS digest via AskUserQuestion. Combine this with any mode question if applicable (don't ask two separate questions — merge into one AskUserQuestion call).
+**TIMING IS CRITICAL**: Ask the format question AS SOON AS the user submits their URL — do NOT wait for content extraction or transcription to finish. The format question should be asked **in parallel with extraction** so the user answers while content is being fetched/transcribed. For fast extractions (text articles), you may ask after extraction. But for slow extractions (video transcription, Playwright), you MUST ask BEFORE extraction completes.
+
+ALWAYS ask the user what output format they want for THIS digest via AskUserQuestion. Combine with any mode question when possible (one AskUserQuestion call, not two).
 
 Format options:
 - **Markdown** (default / recommended) — saved to `md_output_dir`
