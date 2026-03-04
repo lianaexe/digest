@@ -31,14 +31,15 @@ On first run, if no config exists at `.digest-config` in this skill's directory:
 
 2. **Ask setup questions** via AskUserQuestion — you MUST ask BOTH questions, do NOT skip any:
 
-   Q1 — Output directory:
+   Q1 — Markdown output directory:
    - If Obsidian vault detected: offer `{vault}/Inbox/` as recommended option
-   - Always offer: `~/Documents/digest/`
+   - Always offer: `~/Documents/digest/md/`
    - Always offer: Custom path
 
-   Q2 — Default output format (MUST ask even if it seems obvious):
-   - Markdown (recommended)
-   - HTML
+   Q2 — HTML output directory:
+   - Offer: `~/Documents/digest/html/` (recommended)
+   - If Obsidian vault detected: also offer `{vault}/Inbox/`
+   - Always offer: Custom path
 
 3. **Offer dependency installation** if missing tools detected:
 
@@ -58,8 +59,8 @@ On first run, if no config exists at `.digest-config` in this skill's directory:
 
 4. **Save config** to `.digest-config` in this skill's directory:
    ```yaml
-   output_dir: ~/path/chosen/by/user
-   default_format: markdown
+   md_output_dir: ~/obsidian-vault/Inbox/    # where markdown files go
+   html_output_dir: ~/Documents/digest/html/  # where HTML files go
    language: auto
    tools:
      x_reader: true/false
@@ -84,17 +85,21 @@ For multiple URLs, use `x-reader` `read_batch` if available, otherwise extract s
 
 After extraction, check if deep extraction is needed — see `PLATFORMS.md` for platform-specific logic.
 
-### Step 3: Evaluate Signal Strength & Select Mode
+### Step 3: Evaluate Signal Strength, Select Mode & Ask Format
 
-Based on what the user said (if anything), determine how to proceed:
+This step has two parts: **mode selection** (based on signal strength) and **format selection** (always ask).
 
-| User Input | Action | Mode |
-|------------|--------|------|
-| Bare URL, no comment | Execute directly, no questions | Quick Save |
-| URL + vague note ("nice", "cool", "不错") | Execute directly, no questions | Quick Save |
-| URL + clear intent ("planning a trip", "researching X") | Ask 1 confirming question via AskUserQuestion | Auto-detect (see below) |
-| URL + explicit instruction ("break this down", "compare these") | Execute directly, no questions | Match to mode directly |
-| Multiple URLs + context | Execute directly, no questions | Research |
+#### 3a: Mode Selection
+
+Based on what the user said (if anything), determine the digest mode:
+
+| User Input | Mode Action | Mode |
+|------------|------------|------|
+| Bare URL, no comment | Auto-select, no mode question | Quick Save |
+| URL + vague note ("nice", "cool", "不错") | Auto-select, no mode question | Quick Save |
+| URL + clear intent ("planning a trip", "researching X") | Ask 1 confirming question | Auto-detect (see below) |
+| URL + explicit instruction ("break this down", "compare these") | Auto-select, no mode question | Match to mode directly |
+| Multiple URLs + context | Auto-select, no mode question | Research |
 
 **Mode detection rules** (when auto-detecting):
 
@@ -106,6 +111,15 @@ Based on what the user said (if anything), determine how to proceed:
 
 When the detected mode is ambiguous, ask ONE confirming question:
 "Detected this is about [topic]. Would you like me to: 1) [Mode A action] 2) [Mode B action] 3) Just save it"
+
+#### 3b: Format Selection (ALWAYS ask)
+
+After determining the mode, ALWAYS ask the user what output format they want for THIS digest via AskUserQuestion. Combine this with any mode question if applicable (don't ask two separate questions — merge into one AskUserQuestion call).
+
+Format options:
+- **Markdown** (default / recommended) — saved to `md_output_dir`
+- **HTML** — saved to `html_output_dir`, auto-opened in browser after saving
+- **Both** — generates both formats, saves to respective directories, opens HTML in browser
 
 ### Step 4: Generate Output
 
@@ -120,12 +134,12 @@ Load the appropriate template from `TEMPLATES.md` based on the selected mode and
 
 ### Step 5: Save & Confirm
 
-1. Read `output_dir` from `.digest-config`
-2. Generate filename: `{cleaned_title, max 60 chars}.{ext}`
-   - For markdown: `.md`
-   - For HTML: `.html`
-3. Write the file
-4. If output format is HTML, run `open {filepath}` to preview in browser
+1. Read output directories from `.digest-config`
+2. Generate filename: `{cleaned_title, max 60 chars}`
+3. Save based on user's format choice:
+   - **Markdown**: write `{filename}.md` to `md_output_dir`
+   - **HTML**: write `{filename}.html` to `html_output_dir`, then run `open {filepath}` to preview in browser
+   - **Both**: write both files to their respective directories, open the HTML in browser
 5. Display a **digest card** to confirm (use box-drawing characters for visual structure):
 
 ```
